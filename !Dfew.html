@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>לוח שמירות ותורנויות מחלקתי - גדוד 932</title>
+  <style>
+    :root {
+      --primary: #1b4332;
+      --secondary: #2d6a4f;
+      --accent: #d8f3dc;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #212529;
+      --danger: #e63946;
+      --warning: #ffb703;
+      --success: #38b000;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 15px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .header-title-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logos {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .unit-logo {
+      height: 55px;
+      width: auto;
+      object-fit: contain;
+      background: white;
+      padding: 3px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: #e9ecef;
+      color: var(--text);
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .tab-btn.active {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: var(--primary);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 0.95em;
+    }
+
+    button.btn-primary {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    button.btn-primary:hover {
+      background: var(--primary);
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .schedule-table th, .schedule-table td {
+      border: 1px solid #dee2e6;
+      padding: 8px 10px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+
+    .schedule-table th {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+    }
+
+    .class-box {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fafafa;
+    }
+
+    .class-title {
+      font-weight: bold;
+      color: var(--secondary);
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .soldier-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+      gap: 8px;
+    }
+
+    .status-btn {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      cursor: pointer;
+      border: none;
+      color: white;
+      width: auto;
+      white-space: nowrap;
+    }
+
+    .status-active { background: var(--success); }
+    .status-out { background: var(--danger); }
+    .status-kitchen { background: var(--warning); color: black; }
+
+    .name-input {
+      padding: 4px 6px;
+      font-size: 0.85em;
+    }
+
+    .view-roster-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .view-roster-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #e0e0e0;
+      font-size: 0.95em;
+    }
+
+    .status-tag {
+      font-size: 0.75em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .tag-active { background: #e8f5e9; color: #2e7d32; }
+    .tag-out { background: #ffebee; color: #c62828; }
+    .tag-kitchen { background: #fff8e1; color: #f57f17; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-title-container">
+      <div>
+        <h1 style="margin:0; font-size:1.4em;">לוח שמירות ותורנויות מחלקתי</h1>
+        <small id="current-date"></small>
+      </div>
+    </div>
+    <div class="logos">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Gadid932.png/400px-Gadid932.png" alt="גדוד 932" class="unit-logo" title="גדוד 932 (גרניט)">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Bislamach_Tag.svg/400px-Bislamach_Tag.svg.png" alt="חטיבת ביסלמ&quot;ח" class="unit-logo" title="חטיבת ביסלמ&quot;ח">
+    </div>
+  </div>
+
+  <!-- 3 בלשוניות נפרדות -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('view')">📊 לוח שמירות יומיומי</button>
+    <button class="tab-btn" onclick="switchTab('roster')">👥 רשימת מחלקה (1–38)</button>
+    <button class="tab-btn" onclick="switchTab('admin')">⚙️️ אזור ניהול</button>
+  </div>
+
+  <!-- TAB 1: VIEW SCHEDULE -->
+  <div id="tab-view" class="tab-content active">
+    
+    <div class="card">
+      <h2>משמרות שמירה להיום</h2>
+      <div style="overflow-x:auto;">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>שעות</th>
+              <th>ש"ג ראשי</th>
+              <th>ש"ג אחורי</th>
+              <th>שומר פלוגתי</th>
+              <th>בונקר</th>
+              <th>נשקייה</th>
+              <th>לוגיסטיקה</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>תורנות מטבח להיום</h2>
+      <div id="duty-summary"></div>
+    </div>
+
+  </div>
+
+  <!-- TAB 2: SEPARATE ROSTER TAB -->
+  <div id="tab-roster" class="tab-content">
+    <div class="card">
+      <h2>רשימת חיילי המחלקה לפי כיתות</h2>
+      <div class="roster-grid">
+        <div class="class-box">
+          <div class="class-title">כיתה א' (1-13)</div>
+          <ul class="view-roster-list" id="view-class-A"></ul>
+        </div>
+        <div class="class-box">
+          <div class="class-title">כיתה ב' (14-25)</div>
+          <ul class="view-roster-list" id="view-class-B"></ul>
+        </div>
+        <div class="class-box">
+          <div class="class-title">כיתה ג' (26-38)</div>
+          <ul class="view-roster-list" id="view-class-C"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: ADMIN -->
+  <div id="tab-admin" class="tab-content">
+    
+    <div class="card">
+      <h2>הגדרות סבב ושעה</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+        <div class="form-group">
+          <label>שעת התחלה ראשונה:</label>
+          <input type="time" id="start-time" value="01:00" onchange="saveData()">
+        </div>
+        <div class="form-group">
+          <label>מספר חייל מתחיל בתור (1-38):</label>
+          <input type="number" id="start-soldier" value="1" min="1" max="38" onchange="saveData()">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>הגדרת תורנית מטבח</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+        <div class="form-group">
+          <label>כיתה תורנית:</label>
+          <select id="kitchen-class" onchange="applyKitchenDuty()">
+            <option value="none">ללא / ללא מטבח היום</option>
+            <option value="A">כיתה א' (1-13)</option>
+            <option value="B">כיתה ב' (14-25)</option>
+            <option value="C">כיתה ג' (26-38)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>כמות חיילים למטבח:</label>
+          <input type="number" id="kitchen-count" value="10" min="1" max="13" onchange="applyKitchenDuty()">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>ניהול שמות וזמינות חיילים במחלקה</h2>
+      <p style="font-size: 0.85em; color: #555;">הזן את שמות החיילים ולחץ על הלחצן לשינוי סטטוס (פעיל / לא נמצא / מטבח):</p>
+      
+      <div class="roster-grid">
+        <div class="class-box">
+          <div class="class-title">כיתה א' (1-13)</div>
+          <div id="admin-class-A"></div>
+        </div>
+        <div class="class-box">
+          <div class="class-title">כיתה ב' (14-25)</div>
+          <div id="admin-class-B"></div>
+        </div>
+        <div class="class-box">
+          <div class="class-title">כיתה ג' (26-38)</div>
+          <div id="admin-class-C"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let soldiers = JSON.parse(localStorage.getItem('platoon_soldiers')) || [];
+
+    if (soldiers.length === 0) {
+      for(let i=1; i<=38; i++) {
+        let c = i <= 13 ? 'A' : (i <= 25 ? 'B' : 'C');
+        soldiers.push({
+          id: i,
+          name: `חייל ${i}`,
+          class: c,
+          status: 'active'
+        });
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem('platoon_soldiers', JSON.stringify(soldiers));
+      localStorage.setItem('start_time', document.getElementById('start-time').value);
+      localStorage.setItem('start_soldier', document.getElementById('start-soldier').value);
+      localStorage.setItem('kitchen_class', document.getElementById('kitchen-class').value);
+      localStorage.setItem('kitchen_count', document.getElementById('kitchen-count').value);
+      
+      renderAll();
+    }
+
+    function loadSavedSettings() {
+      if(localStorage.getItem('start_time')) document.getElementById('start-time').value = localStorage.getItem('start_time');
+      if(localStorage.getItem('start_soldier')) document.getElementById('start-soldier').value = localStorage.getItem('start_soldier');
+      if(localStorage.getItem('kitchen_class')) document.getElementById('kitchen-class').value = localStorage.getItem('kitchen_class');
+      if(localStorage.getItem('kitchen_count')) document.getElementById('kitchen-count').value = localStorage.getItem('kitchen_count');
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      if(tab === 'view') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('tab-view').classList.add('active');
+      } else if(tab === 'roster') {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tab-roster').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('tab-admin').classList.add('active');
+      }
+    }
+
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('he-IL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    function renderAdminRoster() {
+      ['A', 'B', 'C'].forEach(c => {
+        const container = document.getElementById(`admin-class-${c}`);
+        container.innerHTML = '';
+        soldiers.filter(s => s.class === c).forEach(s => {
+          const row = document.createElement('div');
+          row.className = 'soldier-row';
+          
+          let btnClass = s.status === 'active' ? 'status-active' : (s.status === 'out' ? 'status-out' : 'status-kitchen');
+          let btnText = s.status === 'active' ? 'פעיל' : (s.status === 'out' ? 'חופש/גימלים' : 'מטבח');
+
+          row.innerHTML = `
+            <span style="font-weight:bold; width:25px;">#${s.id}</span>
+            <input type="text" class="name-input" value="${s.name}" onchange="updateName(${s.id}, this.value)">
+            <button class="status-btn ${btnClass}" onclick="toggleSoldierStatus(${s.id})">${btnText}</button>
+          `;
+          container.appendChild(row);
+        });
+      });
+    }
+
+    function renderViewRoster() {
+      ['A', 'B', 'C'].forEach(c => {
+        const container = document.getElementById(`view-class-${c}`);
+        container.innerHTML = '';
+        soldiers.filter(s => s.class === c).forEach(s => {
+          const li = document.createElement('li');
+          li.className = 'view-roster-item';
+          
+          let tagClass = s.status === 'active' ? 'tag-active' : (s.status === 'out' ? 'tag-out' : 'tag-kitchen');
+          let statusLabel = s.status === 'active' ? 'פעיל' : (s.status === 'out' ? 'לא בסבב' : 'מטבח');
+
+          li.innerHTML = `
+            <span><strong>#${s.id}</strong> ${s.name}</span>
+            <span class="status-tag ${tagClass}">${statusLabel}</span>
+          `;
+          container.appendChild(li);
+        });
+      });
+    }
+
+    function updateName(id, newName) {
+      const s = soldiers.find(x => x.id === id);
+      if(s) s.name = newName;
+      saveData();
+    }
+
+    function toggleSoldierStatus(id) {
+      const s = soldiers.find(x => x.id === id);
+      if(s.status === 'active') s.status = 'out';
+      else if(s.status === 'out') s.status = 'kitchen';
+      else s.status = 'active';
+      
+      saveData();
+    }
+
+    function applyKitchenDuty() {
+      const selectedClass = document.getElementById('kitchen-class').value;
+      const count = parseInt(document.getElementById('kitchen-count').value);
+
+      soldiers.forEach(s => { if(s.status === 'kitchen') s.status = 'active'; });
+
+      if(selectedClass !== 'none') {
+        const classSoldiers = soldiers.filter(s => s.class === selectedClass && s.status !== 'out');
+        for(let i=0; i<Math.min(count, classSoldiers.length); i++) {
+          classSoldiers[i].status = 'kitchen';
+        }
+      }
+
+      saveData();
+    }
+
+    function updateKitchenSummary() {
+      const kitchenList = soldiers.filter(s => s.status === 'kitchen').map(s => `#${s.id} ${s.name}`);
+      const container = document.getElementById('duty-summary');
+      if(kitchenList.length > 0) {
+        container.innerHTML = `<p><strong>חיילים בתורנות מטבח להיום:</strong> ${kitchenList.join(' | ')}</p>`;
+      } else {
+        container.innerHTML = `<p>אין תורני מטבח מוגדרים להיום.</p>`;
+      }
+    }
+
+    function generateSchedule() {
+      const tbody = document.getElementById('schedule-body');
+      tbody.innerHTML = '';
+
+      let startTime = document.getElementById('start-time').value || "01:00";
+      let currentSoldierIdx = (parseInt(document.getElementById('start-soldier').value) || 1) - 1;
+
+      let [startHour, startMin] = startTime.split(':').map(Number);
+
+      for(let shift = 0; shift < 8; shift++) {
+        let fromHour = (startHour + shift * 3) % 24;
+        let toHour = (fromHour + 3) % 24;
+        
+        let timeStr = `${String(fromHour).padStart(2,'0')}:00 - ${String(toHour).padStart(2,'0')}:00`;
+
+        let row = document.createElement('tr');
+        let shiftSoldiers = [];
+
+        for(let pos = 0; pos < 6; pos++) {
+          let checkCount = 0;
+          while(soldiers[currentSoldierIdx % 38].status !== 'active' && checkCount < 38) {
+            currentSoldierIdx++;
+            checkCount++;
+          }
+          let assigned = soldiers[currentSoldierIdx % 38];
+          shiftSoldiers.push(`#${assigned.id} ${assigned.name}`);
+          currentSoldierIdx++;
+        }
+
+        row.innerHTML = `
+          <td><strong>${timeStr}</strong></td>
+          <td>${shiftSoldiers[0]}</td>
+          <td>${shiftSoldiers[1]}</td>
+          <td>${shiftSoldiers[2]}</td>
+          <td>${shiftSoldiers[3]}</td>
+          <td>${shiftSoldiers[4]}</td>
+          <td>${shiftSoldiers[5]}</td>
+        `;
+        tbody.appendChild(row);
+      }
+    }
+
+    function renderAll() {
+      renderAdminRoster();
+      renderViewRoster();
+      generateSchedule();
+      updateKitchenSummary();
+    }
+
+    loadSavedSettings();
+    renderAll();
+  </script>
+</body>
+</html>
